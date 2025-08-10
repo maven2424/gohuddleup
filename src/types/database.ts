@@ -41,7 +41,7 @@ export interface Database {
           socials_instagram: string | null
           socials_snap: string | null
           socials_tiktok: string | null
-          address: any | null
+          address: string | null
           created_at: string
         }
         Insert: {
@@ -57,7 +57,7 @@ export interface Database {
           socials_instagram?: string | null
           socials_snap?: string | null
           socials_tiktok?: string | null
-          address?: any | null
+          address?: string | null
           created_at?: string
         }
         Update: {
@@ -73,7 +73,7 @@ export interface Database {
           socials_instagram?: string | null
           socials_snap?: string | null
           socials_tiktok?: string | null
-          address?: any | null
+          address?: string | null
           created_at?: string
         }
       }
@@ -85,7 +85,7 @@ export interface Database {
           name2: string | null
           phone: string
           email: string
-          address: any | null
+          address: string | null
           workplace: string | null
           created_at: string
         }
@@ -96,7 +96,7 @@ export interface Database {
           name2?: string | null
           phone: string
           email: string
-          address?: any | null
+          address?: string | null
           workplace?: string | null
           created_at?: string
         }
@@ -107,7 +107,7 @@ export interface Database {
           name2?: string | null
           phone?: string
           email?: string
-          address?: any | null
+          address?: string | null
           workplace?: string | null
           created_at?: string
         }

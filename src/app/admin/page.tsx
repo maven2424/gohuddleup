@@ -28,9 +28,10 @@ export default function AdminLoginPage() {
         toast.success(`Welcome, ${userData.role} Admin!`)
         router.push('/admin/dashboard')
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Login error:', error)
-      toast.error(error.message || 'Login failed. Please check your credentials.')
+      const errorMessage = error instanceof Error ? error.message : 'Login failed. Please check your credentials.'
+      toast.error(errorMessage)
     } finally {
       setIsLoading(false)
     }

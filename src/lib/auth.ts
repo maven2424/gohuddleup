@@ -1,5 +1,4 @@
 import { supabase, createServerClient } from './supabase'
-import { Tables } from '@/types/database'
 
 export async function signInAdmin(email: string, password: string) {
   try {

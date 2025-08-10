@@ -97,7 +97,7 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="mt-2 h-12 px-4 border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-colors"
+                className="mt-2 h-12 px-4 border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-colors text-gray-900 bg-white placeholder-gray-500"
                 placeholder="admin@gohuddleup.com"
               />
             </div>
@@ -113,7 +113,7 @@ export default function AdminLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="h-12 px-4 pr-12 border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-colors"
+                  className="h-12 px-4 pr-12 border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-colors text-gray-900 bg-white placeholder-gray-500"
                   placeholder="Enter your password"
                 />
                 <button

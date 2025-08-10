@@ -30,4 +30,3 @@ INSERT INTO huddles (school_id, name) VALUES
 -- INSERT INTO role_assignments (user_id, role, scope_type, scope_id) VALUES
 --   ('your-user-id-here', 'SUPER', 'STATE', (SELECT id FROM states WHERE code = 'TX'));
 
-

@@ -1,14 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-
-// Force dynamic rendering to avoid build-time issues
-export const dynamic = 'force-dynamic'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Shield, Eye, EyeOff } from 'lucide-react'
+import { Shield, Eye, EyeOff, Crown, Users, School, Globe } from 'lucide-react'
 import Link from 'next/link'
 import { signInAdmin } from '@/lib/auth'
 import toast from 'react-hot-toast'
@@ -41,119 +38,130 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          <Link href="/" className="text-3xl font-bold text-blue-600">
+          <Link href="/" className="text-4xl font-bold text-blue-600 hover:text-blue-700 transition-colors">
             goHuddleUp
           </Link>
-          <div className="mt-6">
-            <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <Shield className="h-8 w-8 text-blue-600" />
+          <div className="mt-8">
+            <div className="bg-gradient-to-br from-purple-500 to-blue-600 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-lg">
+              <Shield className="h-10 w-10 text-white" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900">Admin Login</h2>
-            <p className="mt-2 text-sm text-gray-600">
-              Access FCA staff dashboard and management tools
+            <h2 className="text-3xl font-bold text-gray-900">Admin Portal</h2>
+            <p className="mt-3 text-lg text-gray-600">
+              Secure access for FCA staff and administrators
             </p>
           </div>
         </div>
 
+        {/* Admin Types Info */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">Access Levels</h3>
+          <div className="grid grid-cols-1 gap-3">
+            <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg border border-purple-200">
+              <Crown className="h-5 w-5 text-purple-600" />
+              <div>
+                <p className="text-sm font-medium text-purple-900">Super Admin</p>
+                <p className="text-xs text-purple-600">Full system access & control</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <Globe className="h-5 w-5 text-blue-600" />
+              <div>
+                <p className="text-sm font-medium text-blue-900">State/Regional Admin</p>
+                <p className="text-xs text-blue-600">Multi-school management</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg border border-green-200">
+              <School className="h-5 w-5 text-green-600" />
+              <div>
+                <p className="text-sm font-medium text-green-900">School Admin</p>
+                <p className="text-xs text-green-600">Single school operations</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Login Form */}
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+        <div className="bg-white rounded-xl shadow-xl border border-gray-200 p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <Label htmlFor="email">Email Address</Label>
+              <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                Email Address
+              </Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="mt-1"
-                placeholder="Enter your email"
-                disabled={isLoading}
+                className="mt-2 h-12 px-4 border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-colors"
+                placeholder="admin@gohuddleup.com"
               />
             </div>
 
             <div>
-              <Label htmlFor="password">Password</Label>
-              <div className="relative mt-1">
+              <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+                Password
+              </Label>
+              <div className="mt-2 relative">
                 <Input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  className="h-12 px-4 pr-12 border-gray-300 focus:border-blue-500 focus:ring-blue-500 transition-colors"
                   placeholder="Enter your password"
-                  className="pr-10"
-                  disabled={isLoading}
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   onClick={() => setShowPassword(!showPassword)}
-                  disabled={isLoading}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
                 >
                   {showPassword ? (
-                    <EyeOff className="h-4 w-4 text-gray-400" />
+                    <EyeOff className="h-5 w-5" />
                   ) : (
-                    <Eye className="h-4 w-4 text-gray-400" />
+                    <Eye className="h-5 w-5" />
                   )}
                 </button>
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <Label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Remember me
-                </Label>
-              </div>
-
-              <div className="text-sm">
-                <Link href="/admin/forgot-password" className="font-medium text-blue-600 hover:text-blue-500">
-                  Forgot your password?
-                </Link>
-              </div>
-            </div>
-
             <Button
               type="submit"
-              className="w-full"
               disabled={isLoading}
+              className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
             >
-              {isLoading ? 'Signing in...' : 'Sign in'}
+              {isLoading ? (
+                <div className="flex items-center space-x-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <span>Signing In...</span>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <Shield className="h-5 w-5" />
+                  <span>Access Admin Portal</span>
+                </div>
+              )}
             </Button>
           </form>
 
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Need help?</span>
-              </div>
-            </div>
-
-            <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
-                Contact your regional FCA office for admin access
-              </p>
-            </div>
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-500">
+              Need help? Contact your system administrator
+            </p>
           </div>
         </div>
 
         {/* Footer */}
         <div className="text-center">
-          <Link href="/" className="text-sm text-blue-600 hover:text-blue-500">
+          <Link 
+            href="/" 
+            className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+          >
             ← Back to Home
           </Link>
         </div>

@@ -166,3 +166,99 @@ export async function getUserRole(userId: string) {
   }
 }
 
+export async function signInWithEmailAndPassword(email: string, password: string) {
+  if (!supabase) {
+    throw new Error('Supabase client not initialized')
+  }
+  
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+
+    if (error) {
+      throw error
+    }
+
+    if (data.user) {
+      // Check if user has student role
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', data.user.id)
+        .single()
+
+      if (userError) {
+        throw userError
+      }
+
+      if (userData && userData.role === 'STUDENT') {
+        return { user: data.user, userData }
+      } else {
+        throw new Error('User does not have student privileges')
+      }
+    }
+
+    return { user: data.user }
+  } catch (error) {
+    console.error('Sign in error:', error)
+    throw error
+  }
+}
+
+export async function getStudentProfile(userId: string) {
+  if (!supabase) {
+    throw new Error('Supabase client not initialized')
+  }
+  
+  try {
+    const { data, error } = await supabase
+      .from('students')
+      .select(`
+        *,
+        schools (
+          name,
+          huddles (
+            name
+          )
+        )
+      `)
+      .eq('user_id', userId)
+      .single()
+
+    if (error) {
+      throw error
+    }
+
+    return data
+  } catch (error) {
+    console.error('Get student profile error:', error)
+    return null
+  }
+}
+
+export async function updateStudentProfile(userId: string, profileData: Record<string, unknown>) {
+  if (!supabase) {
+    throw new Error('Supabase client not initialized')
+  }
+  
+  try {
+    const { data, error } = await supabase
+      .from('students')
+      .update(profileData)
+      .eq('user_id', userId)
+      .select()
+      .single()
+
+    if (error) {
+      throw error
+    }
+
+    return data
+  } catch (error) {
+    console.error('Update student profile error:', error)
+    throw error
+  }
+}
+

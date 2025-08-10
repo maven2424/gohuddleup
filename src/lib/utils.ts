@@ -37,6 +37,35 @@ export function validatePhone(phone: string) {
   return re.test(phone.replace(/\D/g, ''))
 }
 
+export function formatFileSize(bytes: number): string {
+  if (bytes === 0) return '0 Bytes'
+  const k = 1024
+  const sizes = ['Bytes', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
+
+export function validateImageFile(file: File): { isValid: boolean; error?: string } {
+  const maxSize = 5 * 1024 * 1024 // 5MB
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+  
+  if (file.size > maxSize) {
+    return { isValid: false, error: 'File size must be less than 5MB' }
+  }
+  
+  if (!allowedTypes.includes(file.type)) {
+    return { isValid: false, error: 'Only JPEG, PNG, and WebP images are allowed' }
+  }
+  
+  return { isValid: true }
+}
+
+export function generateProfilePictureUrl(userId: string): string {
+  // This would typically point to your Supabase storage bucket
+  // For now, we'll use a placeholder service
+  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${userId}`
+}
+
 export const GRADES = [
   '6th Grade',
   '7th Grade', 

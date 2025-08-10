@@ -1,6 +1,10 @@
 import { supabase, createServerClient } from './supabase'
 
 export async function signInAdmin(email: string, password: string) {
+  if (!supabase) {
+    throw new Error('Supabase client not initialized')
+  }
+  
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -38,6 +42,10 @@ export async function signInAdmin(email: string, password: string) {
 }
 
 export async function signOut() {
+  if (!supabase) {
+    throw new Error('Supabase client not initialized')
+  }
+  
   const { error } = await supabase.auth.signOut()
   if (error) {
     throw error
@@ -45,6 +53,10 @@ export async function signOut() {
 }
 
 export async function getCurrentUser() {
+  if (!supabase) {
+    throw new Error('Supabase client not initialized')
+  }
+  
   try {
     const { data: { user }, error } = await supabase.auth.getUser()
     
@@ -53,6 +65,10 @@ export async function getCurrentUser() {
     }
 
     if (user) {
+      if (!supabase) {
+        throw new Error('Supabase client not initialized')
+      }
+      
       const { data: userData, error: userError } = await supabase
         .from('users')
         .select('*')
@@ -126,6 +142,10 @@ export async function createAdminUser(email: string, password: string, role: 'SU
 }
 
 export async function getUserRole(userId: string) {
+  if (!supabase) {
+    throw new Error('Supabase client not initialized')
+  }
+  
   try {
     const { data, error } = await supabase
       .from('role_assignments')

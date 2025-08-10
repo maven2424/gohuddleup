@@ -31,12 +31,12 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-    --card: #0a0a0a;
+    --card: #1a1a1a;
     --card-foreground: #ededed;
     --muted: #1a1a1a;
     --muted-foreground: #a1a1aa;
     --border: #27272a;
-    --input: #0a0a0a;
+    --input: #1a1a1a;
     --primary: #3b82f6;
     --primary-foreground: #ffffff;
     --secondary: #1a1a1a;
@@ -75,4 +75,22 @@
 
 .border {
   border-color: var(--border);
+}
+
+/* Force light mode for form inputs to ensure visibility */
+input, select, textarea {
+  background-color: #ffffff !important;
+  color: #171717 !important;
+  border-color: #d1d5db !important;
+}
+
+input::placeholder, select::placeholder, textarea::placeholder {
+  color: #6b7280 !important;
+}
+
+/* Ensure select dropdowns are visible */
+[data-radix-popper-content-wrapper] {
+  background-color: #ffffff !important;
+  color: #171717 !important;
+  border: 1px solid #d1d5db !important;
 }

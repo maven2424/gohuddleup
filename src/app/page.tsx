@@ -64,12 +64,12 @@ export default function HomePage() {
                     State
                   </label>
                   <Select value={selectedState} onValueChange={setSelectedState}>
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white border-gray-300 text-gray-900 hover:bg-gray-50 focus:ring-blue-500 focus:border-blue-500 !bg-white !text-gray-900">
                       <SelectValue placeholder="Select your state" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white border-gray-200 shadow-lg !bg-white !text-gray-900">
                       {STATES.map((state) => (
-                        <SelectItem key={state.code} value={state.code}>
+                        <SelectItem key={state.code} value={state.code} className="text-gray-900 hover:bg-blue-50 focus:bg-blue-50 !text-gray-900">
                           {state.name}
                         </SelectItem>
                       ))}
@@ -87,7 +87,7 @@ export default function HomePage() {
                       placeholder="Search for your school..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10"
+                      className="pl-10 bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 !bg-white !text-gray-900"
                     />
                   </div>
                 </div>

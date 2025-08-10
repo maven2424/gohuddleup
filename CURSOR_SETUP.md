@@ -146,3 +146,4 @@ Your Cursor setup is now optimized for:
 ---
 
 **Happy coding! 🚀**
+

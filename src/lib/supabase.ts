@@ -12,3 +12,4 @@ export const createServerClient = () => {
   
   return createClient(supabaseUrl, supabaseServiceKey)
 }
+

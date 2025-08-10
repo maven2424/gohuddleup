@@ -536,3 +536,4 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER update_thread_last_message_trigger
   AFTER INSERT ON messages
   FOR EACH ROW EXECUTE FUNCTION update_thread_last_message();
+

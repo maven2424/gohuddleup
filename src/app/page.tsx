@@ -209,7 +209,7 @@ export default function HomePage() {
                 <Users className="h-8 w-8 text-blue-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Community
+                FCA Community
               </h3>
               <p className="text-gray-600">
                 Connect with like-minded student athletes who share your values and faith.

@@ -34,7 +34,7 @@ export default function HomePage() {
   const [selectedState, setSelectedState] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [showKentuckySchools, setShowKentuckySchools] = useState(false)
-  const [selectedSchool, setSelectedSchool] = useState<any>(null)
+  const [selectedSchool, setSelectedSchool] = useState<typeof KENTUCKY_SCHOOLS[0] | null>(null)
 
   // Handle state selection and show Kentucky schools
   const handleStateChange = (stateCode: string) => {
@@ -51,7 +51,7 @@ export default function HomePage() {
   }
 
   // Handle school selection and start registration
-  const handleSchoolSelect = (school: any) => {
+  const handleSchoolSelect = (school: typeof KENTUCKY_SCHOOLS[0]) => {
     setSelectedSchool(school)
     setSearchQuery(school.name)
   }

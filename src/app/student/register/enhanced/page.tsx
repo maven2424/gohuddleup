@@ -394,7 +394,7 @@ export default function EnhancedStudentRegisterPage() {
     }
   }
 
-  const updateFormData = (field: string, value: any, subfield?: string) => {
+  const updateFormData = (field: string, value: string | boolean | string[], subfield?: string) => {
     if (subfield) {
       setFormData(prev => ({
         ...prev,

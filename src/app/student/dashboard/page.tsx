@@ -42,7 +42,12 @@ export default function StudentDashboardPage() {
   const [fcaEvents, setFcaEvents] = useState<FCAEvent[]>([])
   const [achievements, setAchievements] = useState<StudentAchievement[]>([])
   const [attendance, setAttendance] = useState<StudentAttendance[]>([])
-  const [fcaStats, setFcaStats] = useState<any>(null)
+  const [fcaStats, setFcaStats] = useState<{
+    total_points: number;
+    meetings_attended: number;
+    events_registered: number;
+    community_service_hours: number;
+  } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -51,6 +56,12 @@ export default function StudentDashboardPage() {
 
   const checkAuthAndLoadData = async () => {
     try {
+      if (!supabase) {
+        console.error('Supabase client not initialized')
+        router.push('/student/login')
+        return
+      }
+      
       const { data: { user }, error: authError } = await supabase.auth.getUser()
       
       if (authError || !user) {
@@ -76,6 +87,8 @@ export default function StudentDashboardPage() {
   }
 
   const loadStudentData = async (userId: string) => {
+    if (!supabase) return
+    
     const { data, error } = await supabase
       .from('students')
       .select(`
@@ -106,6 +119,8 @@ export default function StudentDashboardPage() {
   }
 
   const loadMinistryData = async (userId: string) => {
+    if (!supabase) return
+    
     const { data, error } = await supabase
       .from('ministry_data')
       .select('*')
@@ -121,6 +136,8 @@ export default function StudentDashboardPage() {
   }
 
   const loadParentData = async (userId: string) => {
+    if (!supabase) return
+    
     const { data, error } = await supabase
       .from('parents')
       .select('*')
@@ -135,6 +152,8 @@ export default function StudentDashboardPage() {
   }
 
   const loadFCAEvents = async (userId: string) => {
+    if (!supabase) return
+    
     const { data, error } = await supabase
       .from('student_event_registrations')
       .select(`
@@ -159,6 +178,8 @@ export default function StudentDashboardPage() {
   }
 
   const loadAchievements = async (userId: string) => {
+    if (!supabase) return
+    
     const { data, error } = await supabase
       .from('student_achievements')
       .select('*')
@@ -174,6 +195,8 @@ export default function StudentDashboardPage() {
   }
 
   const loadAttendance = async (userId: string) => {
+    if (!supabase) return
+    
     const { data, error } = await supabase
       .from('student_attendance')
       .select('*')
@@ -189,6 +212,8 @@ export default function StudentDashboardPage() {
   }
 
   const loadFCAStats = async (userId: string) => {
+    if (!supabase) return
+    
     try {
       const { data, error } = await supabase
         .rpc('get_fca_statistics', { student_uuid: userId })

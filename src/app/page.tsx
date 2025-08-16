@@ -8,23 +8,59 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { STATES } from '@/lib/utils'
-import { Search, Users, Shield, MessageSquare, BarChart3 } from 'lucide-react'
+import { Search, Users, Shield, MessageSquare, BarChart3, MapPin } from 'lucide-react'
 import Link from 'next/link'
+
+// Kentucky high schools for testing
+const KENTUCKY_SCHOOLS = [
+  { id: 1, name: 'Ryle High School', city: 'Union', county: 'Boone' },
+  { id: 2, name: 'Boone County High School', city: 'Florence', county: 'Boone' },
+  { id: 3, name: 'Conner High School', city: 'Hebron', county: 'Boone' },
+  { id: 4, name: 'Cooper High School', city: 'Union', county: 'Boone' },
+  { id: 5, name: 'Covington Catholic High School', city: 'Park Hills', county: 'Kenton' },
+  { id: 6, name: 'Beechwood High School', city: 'Fort Mitchell', county: 'Kenton' },
+  { id: 7, name: 'Dixie Heights High School', city: 'Edgewood', county: 'Kenton' },
+  { id: 8, name: 'Highlands High School', city: 'Fort Thomas', county: 'Campbell' },
+  { id: 9, name: 'Campbell County High School', city: 'Alexandria', county: 'Campbell' },
+  { id: 10, name: 'Bishop Brossart High School', city: 'Alexandria', county: 'Campbell' },
+  { id: 11, name: 'Scott High School', city: 'Taylor Mill', county: 'Kenton' },
+  { id: 12, name: 'Simon Kenton High School', city: 'Independence', county: 'Kenton' },
+  { id: 13, name: 'Walton-Verona High School', city: 'Walton', county: 'Boone' },
+  { id: 14, name: 'Ludlow High School', city: 'Ludlow', county: 'Kenton' },
+  { id: 15, name: 'Villa Madonna Academy', city: 'Villa Hills', county: 'Kenton' }
+]
 
 export default function HomePage() {
   const [selectedState, setSelectedState] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
+  const [showKentuckySchools, setShowKentuckySchools] = useState(false)
+  const [selectedSchool, setSelectedSchool] = useState<any>(null)
 
-  // Handle state selection and auto-populate school name for Kentucky
+  // Handle state selection and show Kentucky schools
   const handleStateChange = (stateCode: string) => {
     setSelectedState(stateCode)
+    setSelectedSchool(null)
     
-    // Auto-populate "Ryle High School" when Kentucky is selected
     if (stateCode === 'KY') {
-      setSearchQuery('Ryle High School')
-    } else {
-      // Clear school name when other states are selected
+      setShowKentuckySchools(true)
       setSearchQuery('')
+    } else {
+      setShowKentuckySchools(false)
+      setSearchQuery('')
+    }
+  }
+
+  // Handle school selection and start registration
+  const handleSchoolSelect = (school: any) => {
+    setSelectedSchool(school)
+    setSearchQuery(school.name)
+  }
+
+  // Start registration process
+  const handleStartRegistration = () => {
+    if (selectedSchool) {
+      // Redirect to student registration page with school info
+      window.location.href = `/student/register?school=${encodeURIComponent(selectedSchool.name)}&city=${encodeURIComponent(selectedSchool.city)}&county=${encodeURIComponent(selectedSchool.county)}`
     }
   }
 
@@ -105,9 +141,51 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-              <Button className="w-full" size="lg">
-                Find My School
-              </Button>
+
+              {/* Kentucky Schools List */}
+              {showKentuckySchools && (
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">
+                    Select Your Kentucky High School
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-64 overflow-y-auto">
+                    {KENTUCKY_SCHOOLS.map((school) => (
+                      <button
+                        key={school.id}
+                        onClick={() => handleSchoolSelect(school)}
+                        className={`p-3 text-left rounded-lg border transition-all duration-200 ${
+                          selectedSchool?.id === school.id
+                            ? 'border-blue-500 bg-blue-50 text-blue-700'
+                            : 'border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50'
+                        }`}
+                      >
+                        <div className="flex items-start space-x-3">
+                          <MapPin className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium text-gray-900">{school.name}</div>
+                            <div className="text-sm text-gray-500">{school.city}, {school.county} County</div>
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Action Button */}
+              {selectedSchool ? (
+                <Button 
+                  onClick={handleStartRegistration}
+                  className="w-full mt-6" 
+                  size="lg"
+                >
+                  Continue to Registration - {selectedSchool.name}
+                </Button>
+              ) : (
+                <Button className="w-full" size="lg" disabled>
+                  {showKentuckySchools ? 'Select a school to continue' : 'Find My School'}
+                </Button>
+              )}
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -151,6 +151,26 @@ export default function EnhancedStudentRegisterPage() {
   })
 
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  // Handle URL parameters for pre-populated school data
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const school = urlParams.get('school')
+    const city = urlParams.get('city')
+    const county = urlParams.get('county')
+    
+    if (school) {
+      setFormData(prev => ({
+        ...prev,
+        schoolName: school,
+        address: {
+          ...prev.address,
+          city: city || '',
+          state: 'KY'
+        }
+      }))
+    }
+  }, [])
 
   const totalSteps = 12
 

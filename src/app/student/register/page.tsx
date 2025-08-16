@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function StudentRegisterPage() {
+function StudentRegisterContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -32,5 +32,20 @@ export default function StudentRegisterPage() {
         <p className="mt-4 text-gray-600">Redirecting to enhanced registration...</p>
       </div>
     </div>
+  )
+}
+
+export default function StudentRegisterPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <StudentRegisterContent />
+    </Suspense>
   )
 }

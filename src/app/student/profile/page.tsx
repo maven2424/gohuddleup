@@ -829,7 +829,7 @@ export default function StudentProfilePage() {
                         min="0"
                         max="4"
                         value={editedProfile?.gpa || ''}
-                        onChange={(e) => setEditedProfile(prev => prev ? {...prev, gpa: parseFloat(e.target.value) || null} : null)}
+                        onChange={(e) => setEditedProfile(prev => prev ? {...prev, gpa: parseFloat(e.target.value) || undefined} : null)}
                         placeholder="e.g., 3.75"
                         className="mt-1 !bg-white !text-gray-900"
                       />

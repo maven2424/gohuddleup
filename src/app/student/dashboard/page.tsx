@@ -27,7 +27,21 @@ import {
 import { supabase } from '@/lib/supabase'
 import { Database } from '@/types/database'
 
-type Student = Database['public']['Tables']['students']['Row']
+type Student = Database['public']['Tables']['students']['Row'] & {
+  schools?: {
+    name: string;
+    regions?: {
+      name: string;
+      states?: {
+        name: string;
+        code: string;
+      }[];
+    };
+  };
+  huddles?: {
+    name: string;
+  };
+}
 type MinistryData = Database['public']['Tables']['ministry_data']['Row']
 type Parent = Database['public']['Tables']['parents']['Row']
 type FCAEvent = Database['public']['Tables']['fca_events']['Row']

@@ -246,6 +246,11 @@ export default function EnhancedStudentRegisterPage() {
     setIsLoading(true)
     
     try {
+      if (!supabase) {
+        toast.error('Authentication service not available')
+        return
+      }
+      
       // Create auth user
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
@@ -396,13 +401,19 @@ export default function EnhancedStudentRegisterPage() {
 
   const updateFormData = (field: string, value: string | boolean | string[], subfield?: string) => {
     if (subfield) {
-      setFormData(prev => ({
-        ...prev,
-        [field]: {
-          ...prev[field as keyof typeof prev],
-          [subfield]: value
+      setFormData(prev => {
+        const currentField = prev[field as keyof typeof prev]
+        if (typeof currentField === 'object' && currentField !== null) {
+          return {
+            ...prev,
+            [field]: {
+              ...currentField,
+              [subfield]: value
+            }
+          }
         }
-      }))
+        return prev
+      })
     } else {
       setFormData(prev => ({
         ...prev,

@@ -15,6 +15,19 @@ export default function HomePage() {
   const [selectedState, setSelectedState] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
 
+  // Handle state selection and auto-populate school name for Kentucky
+  const handleStateChange = (stateCode: string) => {
+    setSelectedState(stateCode)
+    
+    // Auto-populate "Ryle High School" when Kentucky is selected
+    if (stateCode === 'KY') {
+      setSearchQuery('Ryle High School')
+    } else {
+      // Clear school name when other states are selected
+      setSearchQuery('')
+    }
+  }
+
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -63,7 +76,7 @@ export default function HomePage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     State
                   </label>
-                  <Select value={selectedState} onValueChange={setSelectedState}>
+                  <Select value={selectedState} onValueChange={handleStateChange}>
                     <SelectTrigger className="bg-white border-gray-300 text-gray-900 hover:bg-gray-50 focus:ring-blue-500 focus:border-blue-500 !bg-white !text-gray-900">
                       <SelectValue placeholder="Select your state" />
                     </SelectTrigger>

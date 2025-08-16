@@ -44,6 +44,11 @@ interface StudentProfile {
   socials_instagram?: string
   socials_snap?: string
   socials_tiktok?: string
+  preferred_name?: string
+  date_of_birth?: string
+  gender?: string
+  graduation_year?: number
+  gpa?: number
   address?: {
     street?: string
     city?: string
@@ -54,6 +59,20 @@ interface StudentProfile {
     name: string
     huddles?: Array<{ name: string }>
   }
+  // FCA specific fields
+  emergency_contact_name?: string
+  emergency_contact_phone?: string
+  emergency_contact_relationship?: string
+  medical_conditions?: string
+  allergies?: string
+  dietary_restrictions?: string
+  transportation_needs?: string
+  special_accommodations?: string
+  academic_interests?: string[]
+  career_interests?: string[]
+  leadership_positions?: string[]
+  community_service_hours?: number
+  notes?: string
 }
 
 export default function StudentProfilePage() {
@@ -172,10 +191,28 @@ export default function StudentProfilePage() {
         mobile: editedProfile.mobile,
         grade: editedProfile.grade,
         shirt_size: editedProfile.shirt_size,
+        preferred_name: editedProfile.preferred_name,
+        date_of_birth: editedProfile.date_of_birth,
+        gender: editedProfile.gender,
+        graduation_year: editedProfile.graduation_year,
+        gpa: editedProfile.gpa,
         socials_instagram: editedProfile.socials_instagram,
         socials_snap: editedProfile.socials_snap,
         socials_tiktok: editedProfile.socials_tiktok,
-        address: editedProfile.address
+        address: editedProfile.address,
+        emergency_contact_name: editedProfile.emergency_contact_name,
+        emergency_contact_phone: editedProfile.emergency_contact_phone,
+        emergency_contact_relationship: editedProfile.emergency_contact_relationship,
+        medical_conditions: editedProfile.medical_conditions,
+        allergies: editedProfile.allergies,
+        dietary_restrictions: editedProfile.dietary_restrictions,
+        transportation_needs: editedProfile.transportation_needs,
+        special_accommodations: editedProfile.special_accommodations,
+        academic_interests: editedProfile.academic_interests,
+        career_interests: editedProfile.career_interests,
+        leadership_positions: editedProfile.leadership_positions,
+        community_service_hours: editedProfile.community_service_hours,
+        notes: editedProfile.notes
       }
       
       // Update profile in database
@@ -686,6 +723,270 @@ export default function StudentProfilePage() {
                       />
                     ) : (
                       <p className="mt-1 text-gray-900">{profile.address?.zip || 'Not provided'}</p>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Additional Personal Information */}
+            <Card className="bg-white shadow-lg border-0">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold text-gray-900 flex items-center space-x-2">
+                  <User className="h-5 w-5 text-blue-600" />
+                  <span>Additional Information</span>
+                </CardTitle>
+                <CardDescription className="text-gray-600">
+                  Additional personal and academic details
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="preferred_name" className="text-sm font-medium text-gray-700">
+                      Preferred Name
+                    </Label>
+                    {isEditing ? (
+                      <Input
+                        id="preferred_name"
+                        value={editedProfile?.preferred_name || ''}
+                        onChange={(e) => setEditedProfile(prev => prev ? {...prev, preferred_name: e.target.value} : null)}
+                        placeholder="What should we call you?"
+                        className="mt-1 !bg-white !text-gray-900"
+                      />
+                    ) : (
+                      <p className="mt-1 text-gray-900">{profile.preferred_name || 'Not provided'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="date_of_birth" className="text-sm font-medium text-gray-700">
+                      Date of Birth
+                    </Label>
+                    {isEditing ? (
+                      <Input
+                        id="date_of_birth"
+                        type="date"
+                        value={editedProfile?.date_of_birth || ''}
+                        onChange={(e) => setEditedProfile(prev => prev ? {...prev, date_of_birth: e.target.value} : null)}
+                        className="mt-1 !bg-white !text-gray-900"
+                      />
+                    ) : (
+                      <p className="mt-1 text-gray-900">{profile.date_of_birth || 'Not provided'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="gender" className="text-sm font-medium text-gray-700">
+                      Gender
+                    </Label>
+                    {isEditing ? (
+                      <Select value={editedProfile?.gender || ''} onValueChange={(value) => setEditedProfile(prev => prev ? {...prev, gender: value} : null)}>
+                        <SelectTrigger className="mt-1 !bg-white !text-gray-900">
+                          <SelectValue placeholder="Select gender" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="male">Male</SelectItem>
+                          <SelectItem value="female">Female</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                          <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <p className="mt-1 text-gray-900">{profile.gender || 'Not provided'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="graduation_year" className="text-sm font-medium text-gray-700">
+                      Graduation Year
+                    </Label>
+                    {isEditing ? (
+                      <Select value={editedProfile?.graduation_year?.toString() || ''} onValueChange={(value) => setEditedProfile(prev => prev ? {...prev, graduation_year: parseInt(value)} : null)}>
+                        <SelectTrigger className="mt-1 !bg-white !text-gray-900">
+                          <SelectValue placeholder="Select year" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Array.from({ length: 4 }, (_, i) => new Date().getFullYear() + i).map(year => (
+                            <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <p className="mt-1 text-gray-900">{profile.graduation_year || 'Not provided'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="gpa" className="text-sm font-medium text-gray-700">
+                      GPA
+                    </Label>
+                    {isEditing ? (
+                      <Input
+                        id="gpa"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        max="4"
+                        value={editedProfile?.gpa || ''}
+                        onChange={(e) => setEditedProfile(prev => prev ? {...prev, gpa: parseFloat(e.target.value) || null} : null)}
+                        placeholder="e.g., 3.75"
+                        className="mt-1 !bg-white !text-gray-900"
+                      />
+                    ) : (
+                      <p className="mt-1 text-gray-900">{profile.gpa || 'Not provided'}</p>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Emergency Contact & Medical Information */}
+            <Card className="bg-white shadow-lg border-0">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold text-gray-900 flex items-center space-x-2">
+                  <Shield className="h-5 w-5 text-blue-600" />
+                  <span>Emergency Contact & Medical</span>
+                </CardTitle>
+                <CardDescription className="text-gray-600">
+                  Important safety and medical information for FCA events
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="emergency_contact_name" className="text-sm font-medium text-gray-700">
+                      Emergency Contact Name
+                    </Label>
+                    {isEditing ? (
+                      <Input
+                        id="emergency_contact_name"
+                        value={editedProfile?.emergency_contact_name || ''}
+                        onChange={(e) => setEditedProfile(prev => prev ? {...prev, emergency_contact_name: e.target.value} : null)}
+                        placeholder="Full name"
+                        className="mt-1 !bg-white !text-gray-900"
+                      />
+                    ) : (
+                      <p className="mt-1 text-gray-900">{profile.emergency_contact_name || 'Not provided'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="emergency_contact_phone" className="text-sm font-medium text-gray-700">
+                      Emergency Contact Phone
+                    </Label>
+                    {isEditing ? (
+                      <Input
+                        id="emergency_contact_phone"
+                        value={editedProfile?.emergency_contact_phone || ''}
+                        onChange={(e) => setEditedProfile(prev => prev ? {...prev, emergency_contact_phone: e.target.value} : null)}
+                        placeholder="Phone number"
+                        className="mt-1 !bg-white !text-gray-900"
+                      />
+                    ) : (
+                      <p className="mt-1 text-gray-900">{profile.emergency_contact_phone || 'Not provided'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="emergency_contact_relationship" className="text-sm font-medium text-gray-700">
+                      Relationship
+                    </Label>
+                    {isEditing ? (
+                      <Input
+                        id="emergency_contact_relationship"
+                        value={editedProfile?.emergency_contact_relationship || ''}
+                        onChange={(e) => setEditedProfile(prev => prev ? {...prev, emergency_contact_relationship: e.target.value} : null)}
+                        placeholder="e.g., Parent, Guardian"
+                        className="mt-1 !bg-white !text-gray-900"
+                      />
+                    ) : (
+                      <p className="mt-1 text-gray-900">{profile.emergency_contact_relationship || 'Not provided'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="medical_conditions" className="text-sm font-medium text-gray-700">
+                      Medical Conditions
+                    </Label>
+                    {isEditing ? (
+                      <Input
+                        id="medical_conditions"
+                        value={editedProfile?.medical_conditions || ''}
+                        onChange={(e) => setEditedProfile(prev => prev ? {...prev, medical_conditions: e.target.value} : null)}
+                        placeholder="Any medical conditions"
+                        className="mt-1 !bg-white !text-gray-900"
+                      />
+                    ) : (
+                      <p className="mt-1 text-gray-900">{profile.medical_conditions || 'None'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="allergies" className="text-sm font-medium text-gray-700">
+                      Allergies
+                    </Label>
+                    {isEditing ? (
+                      <Input
+                        id="allergies"
+                        value={editedProfile?.allergies || ''}
+                        onChange={(e) => setEditedProfile(prev => prev ? {...prev, allergies: e.target.value} : null)}
+                        placeholder="Food, environmental, etc."
+                        className="mt-1 !bg-white !text-gray-900"
+                      />
+                    ) : (
+                      <p className="mt-1 text-gray-900">{profile.allergies || 'None'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="dietary_restrictions" className="text-sm font-medium text-gray-700">
+                      Dietary Restrictions
+                    </Label>
+                    {isEditing ? (
+                      <Input
+                        id="dietary_restrictions"
+                        value={editedProfile?.dietary_restrictions || ''}
+                        onChange={(e) => setEditedProfile(prev => prev ? {...prev, dietary_restrictions: e.target.value} : null)}
+                        placeholder="Vegetarian, gluten-free, etc."
+                        className="mt-1 !bg-white !text-gray-900"
+                      />
+                    ) : (
+                      <p className="mt-1 text-gray-900">{profile.dietary_restrictions || 'None'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="transportation_needs" className="text-sm font-medium text-gray-700">
+                      Transportation Needs
+                    </Label>
+                    {isEditing ? (
+                      <Input
+                        id="transportation_needs"
+                        value={editedProfile?.transportation_needs || ''}
+                        onChange={(e) => setEditedProfile(prev => prev ? {...prev, transportation_needs: e.target.value} : null)}
+                        placeholder="Any special needs"
+                        className="mt-1 !bg-white !text-gray-900"
+                      />
+                    ) : (
+                      <p className="mt-1 text-gray-900">{profile.transportation_needs || 'None'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="special_accommodations" className="text-sm font-medium text-gray-700">
+                      Special Accommodations
+                    </Label>
+                    {isEditing ? (
+                      <Input
+                        id="special_accommodations"
+                        value={editedProfile?.special_accommodations || ''}
+                        onChange={(e) => setEditedProfile(prev => prev ? {...prev, special_accommodations: e.target.value} : null)}
+                        placeholder="Accessibility needs, etc."
+                        className="mt-1 !bg-white !text-gray-900"
+                      />
+                    ) : (
+                      <p className="mt-1 text-gray-900">{profile.special_accommodations || 'None'}</p>
                     )}
                   </div>
                 </div>
